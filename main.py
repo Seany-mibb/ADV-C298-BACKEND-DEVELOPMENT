@@ -8,6 +8,8 @@ broker = 'broker.emqx.io'
 port = 1883
 topic = "topicName/iot"
 
+detection = 0
+
 client_id = 'test'
 username = 'emqx'
 password = ''
@@ -23,15 +25,15 @@ def on_message(client, userdata, msg):
 
 def check_detection():
     client = mqtt_client.Client(client_id)
-    client.on_connect()
-    client.on_message()
+    client.on_connect = on_connect
+    client.on_message = on_message
     client.connect(broker, port)
     client.loop_start()
 
     for i in range(0, 10):
         time.sleep(5)
         print("This is detection data", detection)
-        return render_template('index.html', status = int(detection))
+        return render_template('C297_project.html', status = int(detection))
     client.loop_stop()
 
 if __name__ == "__main__":
